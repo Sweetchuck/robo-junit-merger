@@ -1,20 +1,8 @@
-# Robo task to merge JUnit XML files
-
-[![CircleCI](https://circleci.com/gh/Sweetchuck/robo-junit-merger/tree/1.x.svg?style=svg)](https://circleci.com/gh/Sweetchuck/robo-junit-merger/?branch=1.x)
-[![codecov](https://codecov.io/gh/Sweetchuck/robo-junit-merger/branch/1.x/graph/badge.svg?token=HSF16OGPyr)](https://app.codecov.io/gh/Sweetchuck/robo-junit-merger/branch/1.x)
-
-
-## Install
-
-`composer require --dev sweetchuck/robo-junit-merger`
-
-
-## Task - taskJunitMerge
-
-```php
 <?php
 
 declare(strict_types = 1);
+
+namespace Sweetchuck\Robo\JunitMerger\Test\Helper\RoboFiles;
 
 use Robo\Tasks;
 use Robo\State\Data as RoboStateData;
@@ -28,6 +16,14 @@ use Symfony\Component\Yaml\Yaml;
 class RoboFileAcceptance extends Tasks
 {
     use JunitMergerTaskLoader;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function output()
+    {
+        return $this->getContainer()->get('output');
+    }
 
     /**
      * @command junit-merger:merge
@@ -80,4 +76,3 @@ class RoboFileAcceptance extends Tasks
         };
     }
 }
-```

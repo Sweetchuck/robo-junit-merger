@@ -1,0 +1,66 @@
+{
+    "type": "robo-tasks",
+    "name": "sweetchuck/robo-junit-merger",
+    "description": "Robo task to merge JUnit XML files",
+    "keywords": [
+        "robo-tasks",
+        "junit"
+    ],
+    "authors": [
+        {
+            "name": "Andor",
+            "role": "Maintainer",
+            "homepage": "https://github.com/Sweetchuck"
+        }
+    ],
+    "support": {
+        "source": "https://github.com/Sweetchuck/robo-junit-merger",
+        "issues": "https://github.com/Sweetchuck/robo-junit-merger/issues"
+    },
+    "license": "GPL-2.0-or-later",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    },
+    "repositories": {
+        "nuvoleweb/robo-config": {
+            "type": "github",
+            "url": "https://github.com/Sweetchuck/robo-config"
+        }
+    },
+    "require": {
+        "php": ">=7.4",
+        "consolidation/robo": "^3.0",
+        "sweetchuck/junit-merger": "1.x-dev"
+    },
+    "require-dev": {
+        "ext-json": "*",
+        "codeception/codeception": "^4.1",
+        "codeception/module-asserts": "^1.1",
+        "nuvoleweb/robo-config": "3.x-dev",
+        "squizlabs/php_codesniffer": "^3.5",
+        "sweetchuck/codeception-module-robo-task-runner": "2.x-dev",
+        "sweetchuck/git-hooks": "^2.x-dev",
+        "sweetchuck/robo-git": "2.x-dev",
+        "sweetchuck/robo-phpcs": "2.x-dev",
+        "symfony/debug": "^4.4 || ^5.0",
+        "symfony/error-handler": "^4.4 || ^5.0"
+    },
+    "suggest": {},
+    "autoload": {
+        "psr-4": {
+            "Sweetchuck\\Robo\\JunitMerger\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Sweetchuck\\Robo\\JunitMerger\\Test\\Acceptance\\": "tests/acceptance/",
+            "Sweetchuck\\Robo\\JunitMerger\\Test\\Unit\\": "tests/unit/",
+            "Sweetchuck\\Robo\\JunitMerger\\Test\\": "tests/_support/"
+        }
+    },
+    "scripts": {},
+    "scripts-descriptions": {}
+}
