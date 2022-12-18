@@ -54,7 +54,7 @@ abstract class TaskTestBase extends Unit
         DummyProcess::reset();
 
         $this->container = new LeagueContainer();
-        $application = new SymfonyApplication('Sweetchuck - Robo PHPUnit', '1.0.0');
+        $application = new SymfonyApplication('Sweetchuck - Robo JUnit Merger', '1.0.0');
         $application->getHelperSet()->set(new DummyProcessHelper(), 'process');
         $this->config = new Config();
         $input = null;
@@ -65,7 +65,7 @@ abstract class TaskTestBase extends Unit
         $this->container->add('container', $this->container);
 
         Robo::configureContainer($this->container, $application, $this->config, $input, $output);
-        $this->container->share('logger', BufferingLogger::class);
+        $this->container->add('logger', BufferingLogger::class);
 
         $this->builder = CollectionBuilder::create($this->container, null);
         $this->taskBuilder = new DummyTaskBuilder();
