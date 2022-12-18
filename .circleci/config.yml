@@ -4,9 +4,6 @@ version: 2.1
 .env_common: &env_common
     SHELL: '/bin/bash'
 
-.env_xdebug: &env_xdebug
-    XDEBUG_MODE: 'coverage'
-
 .env_composer: &env_composer
     COMPOSER_NO_INTERACTION: '1'
     COMPOSER_MEMORY_LIMIT: '-1'
@@ -18,36 +15,69 @@ orbs:
 
 executors:
     php_min:
+        resource_class: 'small'
         environment:
             <<: *env_common
-            <<: *env_xdebug
             <<: *env_composer
 
         docker:
             -
                 name: 'main'
-                image: 'circleci/php:7.4'
+                image: 'cimg/php:7.4'
 
     php_plus1:
+        resource_class: 'small'
         environment:
             <<: *env_common
-            <<: *env_xdebug
             <<: *env_composer
 
         docker:
             -
                 name: 'main'
-                image: 'circleci/php:8.0'
+                image: 'cimg/php:8.0'
+
+    php_plus2:
+        resource_class: 'small'
+        environment:
+            <<: *env_common
+            <<: *env_composer
+
+        docker:
+            -
+                name: 'main'
+                image: 'cimg/php:8.1'
+
+    php_plus3:
+        resource_class: 'small'
+        environment:
+            <<: *env_common
+            <<: *env_composer
+
+        docker:
+            -
+                name: 'main'
+                image: 'cimg/php:8.2'
 
 commands:
     pecl_install_pcov:
-        description: 'Install PCOV extension for PHP'
+        description: 'Install PCOV PHP extension'
         steps:
             -
                 run:
-                    name: 'Install PCOV extension for PHP – pecl install'
+                    name: 'Install PCOV PHP extension - pecl install pcov'
                     command: |
+                        if php -m | grep pcov ; then
+                            exit 0
+                        fi
+
                         sudo pecl install pcov
+                        if php -m | grep pcov ; then
+                            exit 0
+                        fi
+
+                        scanDir="$(php -i | grep --color=never --only-matching --perl-regexp '(?<=^Scan this dir for additional \.ini files => ).+')"
+                        echo 'extension=pcov' | sudo tee "${scanDir}/pcov.ini"
+                        php -m | grep pcov
 
     composer_install:
         description: 'Install Composer dependencies with cache restore and save'
@@ -79,7 +109,7 @@ commands:
                 run:
                     name: 'Run linters'
                     command: |
-                        "$(composer config bin-dir)/robo" -vvv lint
+                        "$(composer config bin-dir)/robo" -vv --ansi lint
 
     test:
         description: 'Run tests'
@@ -88,57 +118,49 @@ commands:
                 run:
                     name: 'Codeception - unit'
                     command: |
-                        "$(composer config bin-dir)/robo" test unit
+                        "$(composer config bin-dir)/robo" -vv --ansi test unit
             -
                 codecov/upload:
                     flags: 'unit'
-                    file: './tests/_output/machine/coverage/unit/coverage.xml'
+                    file: './tests/_log/machine/coverage/unit/coverage.xml'
             -
                 run:
                     name: 'Codeception - acceptance'
                     command: |
-                        "$(composer config bin-dir)/robo" test acceptance
+                        "$(composer config bin-dir)/robo" -vv --ansi test acceptance
             -
                 codecov/upload:
                     flags: 'acceptance'
-                    file: './tests/_output/machine/coverage/acceptance/coverage.xml'
+                    file: './tests/_log/machine/coverage/acceptance/coverage.xml'
             -
                 store_test_results:
                     name: 'Store test results as test results for CircleCI UI'
-                    path: './tests/_output/machine/junit'
+                    path: './tests/_log/machine/junit'
             -
                 store_artifacts:
                     name: 'Store test results as artifacts'
-                    path: './tests/_output/machine/junit'
+                    path: './tests/_log/machine/junit'
 
 jobs:
     build:
         executor: 'php_min'
-        working_directory: '~/repo'
         steps:
             - 'checkout'
             - 'composer_install'
     lint:
         executor: 'php_min'
-        working_directory: '~/repo'
         steps:
             - 'checkout'
             - 'composer_install'
             - 'lint'
-    test_php_min:
-        executor: 'php_min'
-        working_directory: '~/repo'
+    test:
+        parameters:
+            executor:
+                type: 'string'
+        executor: '<<parameters.executor>>'
         steps:
-            - 'pecl_install_pcov'
             - 'checkout'
-            - 'composer_install'
-            - 'test'
-    test_php_plus1:
-        executor: 'php_plus1'
-        working_directory: '~/repo'
-        steps:
             - 'pecl_install_pcov'
-            - 'checkout'
             - 'composer_install'
             - 'test'
 
@@ -152,10 +174,14 @@ workflows:
                     requires:
                         - 'build'
             -
-                test_php_min:
+                test:
+                    name: 'test_<<matrix.executor>>'
                     requires:
                         - 'build'
-            -
-                test_php_plus1:
-                    requires:
-                        - 'build'
+                    matrix:
+                        parameters:
+                            executor:
+                                - 'php_min'
+                                - 'php_plus1'
+                                - 'php_plus2'
+                                - 'php_plus3'
