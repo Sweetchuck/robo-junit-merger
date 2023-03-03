@@ -9,6 +9,7 @@ use Psr\Log\LoggerAwareTrait;
 use Robo\Collection\CollectionBuilder;
 use Robo\Common\ConfigAwareTrait;
 use Robo\Contract\ConfigAwareInterface;
+use Robo\Contract\TaskInterface;
 use Robo\Tasks;
 use Sweetchuck\LintReport\Reporter\BaseReporter;
 use Sweetchuck\Robo\Git\GitTaskLoader;
@@ -84,6 +85,7 @@ class RoboFile extends Tasks implements LoggerAwareInterface, ConfigAwareInterfa
         if (!($container instanceof LeagueContainer)) {
             return;
         }
+
         foreach (BaseReporter::getServices() as $name => $class) {
             if ($container->has($name)) {
                 continue;
@@ -149,20 +151,14 @@ class RoboFile extends Tasks implements LoggerAwareInterface, ConfigAwareInterfa
         return ($output instanceof ConsoleOutputInterface) ? $output->getErrorOutput() : $output;
     }
 
-    /**
-     * @return $this
-     */
-    protected function initEnvVarNamePrefix()
+    protected function initEnvVarNamePrefix(): static
     {
         $this->envVarNamePrefix = strtoupper(str_replace('-', '_', $this->packageName));
 
         return $this;
     }
 
-    /**
-     * @return $this
-     */
-    protected function initEnvironmentTypeAndName()
+    protected function initEnvironmentTypeAndName(): static
     {
         $this->environmentType = (string) getenv($this->getEnvVarName('environment_type'));
         $this->environmentName = (string) getenv($this->getEnvVarName('environment_name'));
@@ -212,22 +208,17 @@ class RoboFile extends Tasks implements LoggerAwareInterface, ConfigAwareInterfa
         return $this;
     }
 
-    /**
-     * @return $this
-     */
-    protected function initComposerInfo()
+    protected function initComposerInfo(): static
     {
-        if ($this->composerInfo) {
+        $composerFileName = getenv('COMPOSER') ?: 'composer.json';
+        if ($this->composerInfo || !is_readable($composerFileName)) {
             return $this;
         }
 
-        $composerFile = getenv('COMPOSER') ?: 'composer.json';
-        $composerContent = file_get_contents($composerFile);
-        if ($composerContent === false) {
-            return $this;
-        }
-
-        $this->composerInfo = json_decode($composerContent, true);
+        $this->composerInfo = json_decode(
+            file_get_contents($composerFileName) ?: '{}',
+            true,
+        );
         [$this->packageVendor, $this->packageName] = explode('/', $this->composerInfo['name']);
 
         if (!empty($this->composerInfo['config']['bin-dir'])) {
@@ -247,10 +238,7 @@ class RoboFile extends Tasks implements LoggerAwareInterface, ConfigAwareInterfa
         return $this->taskComposerValidate($composerExecutable);
     }
 
-    /**
-     * @return $this
-     */
-    protected function initCodeceptionInfo()
+    protected function initCodeceptionInfo(): static
     {
         if ($this->codeceptionInfo) {
             return $this;
@@ -260,6 +248,7 @@ class RoboFile extends Tasks implements LoggerAwareInterface, ConfigAwareInterfa
             'paths' => [
                 'tests' => 'tests',
                 'log' => 'tests/_log',
+                'output' => 'tests/_log',
                 'envs' => 'tests/_envs',
             ],
         ];
@@ -520,7 +509,7 @@ class RoboFile extends Tasks implements LoggerAwareInterface, ConfigAwareInterfa
         if ($invalidSuiteNames) {
             throw new \InvalidArgumentException(
                 'The following Codeception suite names are invalid: ' . implode(', ', $invalidSuiteNames),
-                1
+                1,
             );
         }
     }

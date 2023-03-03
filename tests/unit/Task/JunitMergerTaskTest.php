@@ -5,12 +5,14 @@ declare(strict_types = 1);
 namespace Sweetchuck\Robo\JunitMerger\Test\Unit\Task;
 
 /**
- * @covers \Sweetchuck\Robo\JunitMerger\Task\JunitMergerTask<extended>
+ * @covers \Sweetchuck\Robo\JunitMerger\Task\JunitMergerTask
+ * @covers \Sweetchuck\Robo\JunitMerger\Task\BaseTask
+ * @covers \Sweetchuck\Robo\JunitMerger\JunitMergerTaskLoader
  */
 class JunitMergerTaskTest extends TaskTestBase
 {
 
-    protected function initTask()
+    protected function initTask(): static
     {
         $this->task = $this->taskBuilder->taskJunitMerger();
 

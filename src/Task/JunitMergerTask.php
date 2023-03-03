@@ -12,7 +12,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class JunitMergerTask extends BaseTask
 {
 
-    public function setOptions(array $options)
+    public function setOptions(array $options): static
     {
         parent::setOptions($options);
 
@@ -47,10 +47,7 @@ class JunitMergerTask extends BaseTask
         return $this->getJunitMerger() ?: new JunitMergerSubstr();
     }
 
-    /**
-     * @return $this
-     */
-    public function setJunitMerger(?JunitMergerInterface $junitMerger)
+    public function setJunitMerger(?JunitMergerInterface $junitMerger): static
     {
         $this->junitMerger = $junitMerger;
 
@@ -67,10 +64,8 @@ class JunitMergerTask extends BaseTask
     /**
      * @param string $sourceType
      *   Allowed values: string, file.
-     *
-     * @return $this
      */
-    public function setSourceType(string $sourceType)
+    public function setSourceType(string $sourceType): static
     {
         $this->sourceType = $sourceType;
 
@@ -89,10 +84,7 @@ class JunitMergerTask extends BaseTask
         return $this->getItems() ?: new \ArrayIterator([]);
     }
 
-    /**
-     * @return $this
-     */
-    public function setItems(?\Iterator $items)
+    public function setItems(?\Iterator $items): static
     {
         $this->items = $items;
 
@@ -111,17 +103,14 @@ class JunitMergerTask extends BaseTask
         return $this->getWriter() ?: new BufferedOutput();
     }
 
-    /**
-     * @return $this
-     */
-    public function setWriter(?OutputInterface $writer)
+    public function setWriter(?OutputInterface $writer): static
     {
         $this->writer = $writer;
 
         return $this;
     }
 
-    protected function runDoIt()
+    protected function runDoIt(): static
     {
         $items = $this->getItemsFallback();
         $merger = $this->getJunitMergerFallback();

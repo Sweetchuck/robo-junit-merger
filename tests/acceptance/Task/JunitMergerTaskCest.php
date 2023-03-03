@@ -10,7 +10,8 @@ use Sweetchuck\Robo\JunitMerger\Test\Helper\RoboFiles\RoboFileAcceptance;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * @covers \Sweetchuck\Robo\JunitMerger\Task\JunitMergerTask<extended>
+ * @covers \Sweetchuck\Robo\JunitMerger\Task\JunitMergerTask
+ * @covers \Sweetchuck\Robo\JunitMerger\Task\BaseTask
  * @covers \Sweetchuck\Robo\JunitMerger\JunitMergerTaskLoader
  */
 class JunitMergerTaskCest

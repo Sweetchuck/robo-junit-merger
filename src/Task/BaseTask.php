@@ -26,10 +26,7 @@ abstract class BaseTask extends RoboBaseTask
         return $this->taskName;
     }
 
-    /**
-     * @return $this
-     */
-    public function setOptions(array $options)
+    public function setOptions(array $options): static
     {
         if (array_key_exists('assetNamePrefix', $options)) {
             $this->setAssetNamePrefix($options['assetNamePrefix']);
@@ -45,10 +42,7 @@ abstract class BaseTask extends RoboBaseTask
         return $this->assetNamePrefix;
     }
 
-    /**
-     * @return $this
-     */
-    public function setAssetNamePrefix(string $assetNamePrefix)
+    public function setAssetNamePrefix(string $assetNamePrefix): static
     {
         $this->assetNamePrefix = $assetNamePrefix;
 
@@ -68,38 +62,26 @@ abstract class BaseTask extends RoboBaseTask
             ->runReturn();
     }
 
-    /**
-     * @return $this
-     */
-    protected function runInit()
+    protected function runInit(): static
     {
         return $this;
     }
 
-    /**
-     * @return $this
-     */
-    protected function runHeader()
+    protected function runHeader(): static
     {
         $this->printTaskInfo('is working');
 
         return $this;
     }
 
-    /**
-     * @return $this
-     */
-    protected function runInitAssets()
+    protected function runInitAssets(): static
     {
         $this->assets = [];
 
         return $this;
     }
 
-    /**
-     * @return $this
-     */
-    abstract protected function runDoIt();
+    abstract protected function runDoIt(): static;
 
     protected function runReturn(): Result
     {

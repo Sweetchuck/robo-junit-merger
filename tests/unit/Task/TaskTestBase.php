@@ -44,7 +44,7 @@ abstract class TaskTestBase extends Unit
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function _before()
     {
@@ -75,8 +75,5 @@ abstract class TaskTestBase extends Unit
         $this->initTask();
     }
 
-    /**
-     * @return $this
-     */
-    abstract protected function initTask();
+    abstract protected function initTask(): static;
 }
