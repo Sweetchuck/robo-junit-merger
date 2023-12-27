@@ -32,7 +32,7 @@
     },
     "repositories": {},
     "require": {
-        "php": ">=8.1",
+        "php": ">=8.2",
         "consolidation/robo": "^4.0",
         "sweetchuck/junit-merger": "1.x-dev"
     },
@@ -46,7 +46,6 @@
         "sweetchuck/git-hooks": "^2.x-dev",
         "sweetchuck/robo-git": "3.x-dev",
         "sweetchuck/robo-phpcs": "3.x-dev",
-        "sweetchuck/utils": "1.x-dev",
         "symfony/debug": "^4.0 || ^5.0 || ^6.0",
         "symfony/error-handler": "^5.0 || ^6.0"
     },
