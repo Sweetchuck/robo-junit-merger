@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Sweetchuck\Robo\JunitMerger\Test\Helper\RoboFiles;
+namespace Sweetchuck\Robo\JunitMerger\Tests\Helper\RoboFiles;
 
 use Robo\Tasks;
 use Robo\State\Data as RoboStateData;

@@ -2,13 +2,18 @@
 
 declare(strict_types = 1);
 
-namespace Sweetchuck\Robo\JunitMerger\Test\Unit\Task;
+namespace Sweetchuck\Robo\JunitMerger\Tests\Unit\Task;
 
-/**
- * @covers \Sweetchuck\Robo\JunitMerger\Task\JunitMergerTask
- * @covers \Sweetchuck\Robo\JunitMerger\Task\BaseTask
- * @covers \Sweetchuck\Robo\JunitMerger\JunitMergerTaskLoader
- */
+use Codeception\Attribute\DataProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversTrait;
+use Sweetchuck\Robo\JunitMerger\JunitMergerTaskLoader;
+use Sweetchuck\Robo\JunitMerger\Task\BaseTask;
+use Sweetchuck\Robo\JunitMerger\Task\JunitMergerTask;
+
+#[CoversClass(JunitMergerTask::class)]
+#[CoversClass(BaseTask::class)]
+#[CoversTrait(JunitMergerTaskLoader::class)]
 class JunitMergerTaskTest extends TaskTestBase
 {
 
@@ -19,7 +24,7 @@ class JunitMergerTaskTest extends TaskTestBase
         return $this;
     }
 
-    public function casesRunSuccess(): array
+    public static function casesRunSuccess(): array
     {
         $fixturesDir = codecept_data_dir('fixtures');
 
@@ -73,9 +78,7 @@ class JunitMergerTaskTest extends TaskTestBase
         ];
     }
 
-    /**
-     * @dataProvider casesRunSuccess
-     */
+    #[DataProvider('casesRunSuccess')]
     public function testRunSuccess(array $expected, array $options): void
     {
         $this->task->setOptions($options);

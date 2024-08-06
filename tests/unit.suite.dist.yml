@@ -3,4 +3,4 @@ actor: 'UnitTester'
 modules:
     enabled:
         - 'Asserts'
-        - '\Sweetchuck\Robo\JunitMerger\Test\Helper\Unit'
+        - '\Sweetchuck\Robo\JunitMerger\Tests\Helper\Unit'

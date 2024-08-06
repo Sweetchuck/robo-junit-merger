@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Sweetchuck\Robo\JunitMerger\Test\Unit\Task;
+namespace Sweetchuck\Robo\JunitMerger\Tests\Unit\Task;
 
 use Codeception\Test\Unit;
 use League\Container\Container as LeagueContainer;
@@ -12,8 +12,8 @@ use Robo\Config\Config as RoboConfig;
 use Robo\Robo;
 use Sweetchuck\Codeception\Module\RoboTaskRunner\DummyProcess;
 use Sweetchuck\Codeception\Module\RoboTaskRunner\DummyProcessHelper;
-use Sweetchuck\Robo\JunitMerger\Test\Helper\Dummy\DummyTaskBuilder;
-use Sweetchuck\Robo\JunitMerger\Test\UnitTester;
+use Sweetchuck\Robo\JunitMerger\Tests\Helper\Dummy\DummyTaskBuilder;
+use Sweetchuck\Robo\JunitMerger\Tests\UnitTester;
 use Symfony\Component\Console\Application as SymfonyApplication;
 use Sweetchuck\Codeception\Module\RoboTaskRunner\DummyOutput;
 use Symfony\Component\ErrorHandler\BufferingLogger;

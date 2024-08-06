@@ -1,7 +1,7 @@
 # Robo task to merge JUnit XML files
 
-[![CircleCI](https://circleci.com/gh/Sweetchuck/robo-junit-merger/tree/2.x.svg?style=svg)](https://circleci.com/gh/Sweetchuck/robo-junit-merger/?branch=2.x)
-[![codecov](https://codecov.io/gh/Sweetchuck/robo-junit-merger/branch/2.x/graph/badge.svg?token=HSF16OGPyr)](https://app.codecov.io/gh/Sweetchuck/robo-junit-merger/branch/2.x)
+[![CircleCI](https://circleci.com/gh/Sweetchuck/robo-junit-merger/tree/3.x.svg?style=svg)](https://circleci.com/gh/Sweetchuck/robo-junit-merger/?branch=3.x)
+[![codecov](https://codecov.io/gh/Sweetchuck/robo-junit-merger/branch/3.x/graph/badge.svg?token=HSF16OGPyr)](https://app.codecov.io/gh/Sweetchuck/robo-junit-merger/branch/3.x)
 
 
 ## Install

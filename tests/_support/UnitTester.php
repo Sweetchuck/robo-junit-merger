@@ -1,6 +1,6 @@
 <?php
 
-namespace Sweetchuck\Robo\JunitMerger\Test;
+namespace Sweetchuck\Robo\JunitMerger\Tests;
 
 /**
  * Inherited Methods

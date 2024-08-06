@@ -2,21 +2,25 @@
 
 declare(strict_types = 1);
 
-namespace Sweetchuck\Robo\JunitMerger\Test\Acceptance\Task;
+namespace Sweetchuck\Robo\JunitMerger\Tests\Acceptance\Task;
 
+use Codeception\Attribute\DataProvider;
 use Codeception\Example;
-use Sweetchuck\Robo\JunitMerger\Test\AcceptanceTester;
-use Sweetchuck\Robo\JunitMerger\Test\Helper\RoboFiles\RoboFileAcceptance;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversTrait;
+use Sweetchuck\Robo\JunitMerger\JunitMergerTaskLoader;
+use Sweetchuck\Robo\JunitMerger\Task\BaseTask;
+use Sweetchuck\Robo\JunitMerger\Task\JunitMergerTask;
+use Sweetchuck\Robo\JunitMerger\Tests\AcceptanceTester;
+use Sweetchuck\Robo\JunitMerger\Tests\Helper\RoboFiles\RoboFileAcceptance;
 use Symfony\Component\Yaml\Yaml;
 
-/**
- * @covers \Sweetchuck\Robo\JunitMerger\Task\JunitMergerTask
- * @covers \Sweetchuck\Robo\JunitMerger\Task\BaseTask
- * @covers \Sweetchuck\Robo\JunitMerger\JunitMergerTaskLoader
- */
+#[CoversClass(JunitMergerTask::class)]
+#[CoversClass(BaseTask::class)]
+#[CoversTrait(JunitMergerTaskLoader::class)]
 class JunitMergerTaskCest
 {
-    protected function junitMergerMergeExamples(): array
+    public static function junitMergerMergeExamples(): array
     {
         $fixturesDir = codecept_data_dir('fixtures');
 
@@ -65,10 +69,8 @@ class JunitMergerTaskCest
         ];
     }
 
-    /**
-     * @dataProvider junitMergerMergeExamples
-     */
-    public function junitMergerMerge(AcceptanceTester $tester, Example $example)
+    #[DataProvider('junitMergerMergeExamples')]
+    public function junitMergerMerge(AcceptanceTester $tester, Example $example): void
     {
         $tester->runRoboTask(
             $example['id'],
