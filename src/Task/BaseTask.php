@@ -12,6 +12,9 @@ abstract class BaseTask extends RoboBaseTask
 {
     protected string $taskName = 'JUnit merger';
 
+    /**
+     * @var array<string, mixed>
+     */
     protected array $assets = [];
 
     protected int $taskResultCode = 0;
@@ -26,6 +29,9 @@ abstract class BaseTask extends RoboBaseTask
         return $this->taskName;
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function setOptions(array $options): static
     {
         if (array_key_exists('assetNamePrefix', $options)) {
@@ -87,15 +93,10 @@ abstract class BaseTask extends RoboBaseTask
     {
         return new Result(
             $this,
-            $this->getTaskResultCode(),
+            $this->taskResultCode,
             $this->getTaskResultMessage(),
             $this->getAssetsWithPrefixedNames()
         );
-    }
-
-    protected function getTaskResultCode(): int
-    {
-        return $this->taskResultCode;
     }
 
     protected function getTaskResultMessage(): string
@@ -103,6 +104,9 @@ abstract class BaseTask extends RoboBaseTask
         return '';
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function getAssetsWithPrefixedNames(): array
     {
         $prefix = $this->getAssetNamePrefix();
@@ -125,6 +129,10 @@ abstract class BaseTask extends RoboBaseTask
 
     /**
      * {@inheritdoc}
+     *
+     * @phpstan-param null|array<string, mixed> $context
+     *
+     * @return array<string, mixed>
      */
     protected function getTaskContext($context = null)
     {

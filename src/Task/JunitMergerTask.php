@@ -12,6 +12,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 class JunitMergerTask extends BaseTask
 {
 
+    /**
+     * {@inheritdoc}
+     */
     public function setOptions(array $options): static
     {
         parent::setOptions($options);
@@ -115,8 +118,8 @@ class JunitMergerTask extends BaseTask
         $items = $this->getItemsFallback();
         $merger = $this->getJunitMergerFallback();
         $writer = $this->getWriterFallback();
-        $this->getSourceType() === 'file' ?
-            $merger->mergeXmlFiles($items, $writer)
+        $this->getSourceType() === 'file'
+            ? $merger->mergeXmlFiles($items, $writer)
             : $merger->mergeXmlStrings($items, $writer);
 
         if ($writer instanceof BufferedOutput) {

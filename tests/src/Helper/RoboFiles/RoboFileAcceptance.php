@@ -4,6 +4,9 @@ declare(strict_types = 1);
 
 namespace Sweetchuck\Robo\JunitMerger\Tests\Helper\RoboFiles;
 
+use Consolidation\AnnotatedCommand\Attributes\Command;
+use Consolidation\AnnotatedCommand\Attributes\Help;
+use Robo\Contract\TaskInterface;
 use Robo\Tasks;
 use Robo\State\Data as RoboStateData;
 use Sweetchuck\JunitMerger\JunitMergerDomRead;
@@ -26,8 +29,13 @@ class RoboFileAcceptance extends Tasks
     }
 
     /**
-     * @command junit-merger:merge
+     * @phpstan-param array<string> $items
+     * @phpstan-param array<string, string> $options
      */
+    #[Command(name: 'junit-merger:merge')]
+    #[Help(
+        description: 'Merges JUnit XML files.',
+    )]
     public function cmdJunitMergerMergerExecute(
         array $items,
         array $options = [
@@ -35,7 +43,7 @@ class RoboFileAcceptance extends Tasks
             'merger' => 'substr',
             'dstFile' => '',
         ]
-    ) {
+    ): TaskInterface {
         switch ($options['merger']) {
             case 'dom_read':
                 $merger = new JunitMergerDomRead();
@@ -50,12 +58,15 @@ class RoboFileAcceptance extends Tasks
                 break;
         }
 
+        $fileHandler = $options['dstFile']
+            ? fopen($options['dstFile'], 'w+')
+            : null;
         $args = [
             'sourceType' => $options['sourceType'],
             'items' => new \ArrayIterator($items),
             'junitMerger' => $merger,
-            'writer' => $options['dstFile'] ?
-                new StreamOutput(fopen($options['dstFile'], 'w+'))
+            'writer' => $fileHandler
+                ? new StreamOutput($fileHandler)
                 : null,
         ];
 

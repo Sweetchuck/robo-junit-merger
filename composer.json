@@ -22,6 +22,7 @@
     "prefer-stable": true,
     "config": {
         "allow-plugins": {
+            "phpstan/extension-installer": true,
             "sweetchuck/git-hooks": true
         },
         "optimize-autoloader": true,
@@ -30,32 +31,26 @@
         },
         "sort-packages": true
     },
-    "repositories": {
-        "nuvoleweb/robo-config": {
-            "type": "github",
-            "url": "https://github.com/Sweetchuck/robo-config.git"
-        }
-    },
     "require": {
-        "php": ">=8.3",
+        "php": ">=8.4",
         "consolidation/robo": "^5.0",
-        "sweetchuck/junit-merger": "1.x-dev"
+        "sweetchuck/junit-merger": "2.x-dev"
     },
     "require-dev": {
         "ext-json": "*",
-        "codeception/codeception": "^5.0",
-        "codeception/module-asserts": "^3.0",
-        "nuvoleweb/robo-config": "4.x-dev",
-        "phpmd/phpmd": "^2.15",
-        "squizlabs/php_codesniffer": "^3.5",
-        "sweetchuck/codeception-module-robo-task-runner": "4.x-dev",
+        "nuvoleweb/robo-config": "^3.1",
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-phpunit": "^2.0",
+        "phpunit/phpunit": "^12.4",
+        "squizlabs/php_codesniffer": "^4.0",
         "sweetchuck/git-hooks": "^2.x-dev",
+        "sweetchuck/robo-composer": "4.x-dev",
         "sweetchuck/robo-git": "4.x-dev",
         "sweetchuck/robo-phpcs": "4.x-dev",
-        "sweetchuck/robo-phpmd": "4.x-dev",
-        "symfony/error-handler": "^6.0 || ^7.0"
+        "sweetchuck/robo-phpstan": "3.x-dev",
+        "symfony/error-handler": "^7.0"
     },
-    "suggest": {},
     "autoload": {
         "psr-4": {
             "Sweetchuck\\Robo\\JunitMerger\\": "src/"
@@ -63,11 +58,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Sweetchuck\\Robo\\JunitMerger\\Tests\\Acceptance\\": "tests/acceptance/",
-            "Sweetchuck\\Robo\\JunitMerger\\Tests\\Unit\\": "tests/unit/",
-            "Sweetchuck\\Robo\\JunitMerger\\Tests\\": "tests/_support/"
+            "Sweetchuck\\Robo\\JunitMerger\\Tests\\": "tests/src/"
         }
-    },
-    "scripts": {},
-    "scripts-descriptions": {}
+    }
 }

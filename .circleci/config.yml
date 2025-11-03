@@ -1,8 +1,7 @@
-
 version: 2.1
 
 orbs:
-    codecov: 'codecov/codecov@3.0.0'
+    codecov: 'codecov/codecov@5'
 
 .env_common: &env_common
     SHELL: '/bin/bash'
@@ -22,17 +21,17 @@ executors:
         docker:
             -
                 name: 'main'
-                image: 'cimg/php:8.3'
+                image: 'cimg/php:8.4'
 
-#    php_plus1:
-#        resource_class: 'small'
-#        environment:
-#            <<: *env_common
-#            <<: *env_composer
-#        docker:
-#            -
-#                name: 'main'
-#                image: 'cimg/php:8.4'
+    #php_plus1:
+    #    resource_class: 'small'
+    #    environment:
+    #        <<: *env_common
+    #        <<: *env_composer
+    #    docker:
+    #        -
+    #            name: 'main'
+    #            image: 'cimg/php:8.5'
 
 commands:
     install_php_extension_pcov:
@@ -89,26 +88,32 @@ commands:
         steps:
             -
                 run:
-                    name: 'Codeception - unit'
+                    name: 'Test - unit'
                     command: |
                         "$(composer config 'bin-dir')/robo" --ansi test unit
             -
                 codecov/upload:
                     flags: 'unit'
-                    file: './tests/_output/machine/coverage/unit/coverage.xml'
+                    disable_search: true
+                    files: './reports/machine/unit/coverage/clover.xml'
+            -
+                store_test_results:
+                    name: 'Store unit test results'
+                    path: './reports/machine/unit/result/junit.xml'
             -
                 run:
-                    name: 'Codeception - acceptance'
+                    name: 'Test - acceptance'
                     command: |
                         "$(composer config 'bin-dir')/robo" --ansi test acceptance
             -
                 codecov/upload:
                     flags: 'acceptance'
-                    file: './tests/_output/machine/coverage/acceptance/coverage.xml'
+                    disable_search: true
+                    files: './reports/machine/acceptance/coverage/clover.xml'
             -
                 store_test_results:
-                    name: 'Store unit test results'
-                    path: './tests/_output/machine/junit'
+                    name: 'Store acceptance test results'
+                    path: './reports/machine/acceptance/result/junit.xml'
 
 jobs:
     build:
@@ -151,4 +156,4 @@ workflows:
                         parameters:
                             executor:
                                 - 'php_min'
-#                                - 'php_plus1'
+                                #- 'php_plus1'

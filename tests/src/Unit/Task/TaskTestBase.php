@@ -4,21 +4,21 @@ declare(strict_types = 1);
 
 namespace Sweetchuck\Robo\JunitMerger\Tests\Unit\Task;
 
-use Codeception\Test\Unit;
 use League\Container\Container as LeagueContainer;
+use PHPUnit\Framework\TestCase;
 use Robo\Collection\CollectionBuilder;
-use Robo\Config\Config;
 use Robo\Config\Config as RoboConfig;
 use Robo\Robo;
-use Sweetchuck\Codeception\Module\RoboTaskRunner\DummyProcess;
-use Sweetchuck\Codeception\Module\RoboTaskRunner\DummyProcessHelper;
+use Sweetchuck\Robo\JunitMerger\Tests\Helper\Dummy\DummyProcess;
+use Sweetchuck\Robo\JunitMerger\Tests\Helper\Dummy\DummyProcessHelper;
 use Sweetchuck\Robo\JunitMerger\Tests\Helper\Dummy\DummyTaskBuilder;
 use Sweetchuck\Robo\JunitMerger\Tests\UnitTester;
 use Symfony\Component\Console\Application as SymfonyApplication;
-use Sweetchuck\Codeception\Module\RoboTaskRunner\DummyOutput;
+use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\ErrorHandler\BufferingLogger;
 
-abstract class TaskTestBase extends Unit
+abstract class TaskTestBase extends TestCase
 {
     /**
      * @var \Psr\Container\ContainerInterface
@@ -29,8 +29,6 @@ abstract class TaskTestBase extends Unit
 
     protected CollectionBuilder $builder;
 
-    protected UnitTester $tester;
-
     /**
      * @var \Sweetchuck\Robo\JunitMerger\Task\BaseTask
      */
@@ -38,17 +36,22 @@ abstract class TaskTestBase extends Unit
 
     protected DummyTaskBuilder $taskBuilder;
 
-    protected function selfProjectRoot(): string
+    protected static function selfProjectRoot(): string
     {
-        return dirname(__DIR__, 3);
+        return dirname(__DIR__, 4);
+    }
+
+    protected static function getFixturesDir(): string
+    {
+        return static::selfProjectRoot() . '/tests/fixtures';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function _before()
+    public function setUp(): void
     {
-        parent::_before();
+        parent::setUp();
 
         Robo::unsetContainer();
         DummyProcess::reset();
@@ -56,17 +59,19 @@ abstract class TaskTestBase extends Unit
         $this->container = new LeagueContainer();
         $application = new SymfonyApplication('Sweetchuck - Robo JUnit Merger', '1.0.0');
         $application->getHelperSet()->set(new DummyProcessHelper(), 'process');
-        $this->config = new Config();
+        $this->config = new RoboConfig();
         $input = null;
-        $output = new DummyOutput([
-            'verbosity' => DummyOutput::VERBOSITY_DEBUG,
-        ]);
+        $output = new BufferedOutput(
+            OutputInterface::VERBOSITY_DEBUG,
+            false,
+        );
 
         $this->container->add('container', $this->container);
 
         Robo::configureContainer($this->container, $application, $this->config, $input, $output);
         $this->container->add('logger', BufferingLogger::class);
 
+        // @phpstan-ignore-next-line
         $this->builder = CollectionBuilder::create($this->container, null);
         $this->taskBuilder = new DummyTaskBuilder();
         $this->taskBuilder->setContainer($this->container);

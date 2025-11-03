@@ -1,17 +1,40 @@
+### Common.
+/.cache/
+/reports/
 
-/tests/_output/
-/tests/_support/_generated/
-/tests/*.suite.yml
-/codeception.yml
 
+### Composer.
 /vendor/
+/sweetchuck-robo-junit-merger-*.tar
+/sweetchuck-robo-junit-merger-*.tar.bz2
+/sweetchuck-robo-junit-merger-*.tar.gz
+/sweetchuck-robo-junit-merger-*.zip
 
-/.git-hooks.local
 
+### Composer Suite.
+/.composer-suite/
+/composer.local.json
+/composer.local.lock
+
+
+### PHPUnit.
+/phpunit.xml
+
+
+### PHP Code Sniffer.
 /phpcs.xml
 
+
+### PHPStan.
+/tests/src/Phpstan.php
 /phpstan.neon
 
+
+### Robo.
 /robo.yml
 /RoboFileAcceptance.php
 /RoboFileExample.php
+
+
+### sweetchuck/git-hooks.
+/.git-hooks.local
